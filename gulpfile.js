@@ -2,7 +2,7 @@ var gulp        = require("gulp"),
     jshint      = require("gulp-jshint")
     browserSync = require("browser-sync"),
     typescript  = require("gulp-typescript"),
-    clean       = require("gulp-clean"),
+    del         = require("del"),
     concat      = require("gulp-concat"),
     stripDebug  = require("gulp-strip-debug"),
     uglify      = require("gulp-uglify"),
@@ -14,9 +14,8 @@ gulp.task('hello', function() {
     console.log('This is "Gulp" signing in...');
 });
 
-gulp.task('cleanBuildFolder', function() {
-    return gulp.src('./build', {read: false})
-            .pipe(clean());
+gulp.task('cleanBuildFolder', function(cb) {
+  del('./build', cb);
 });
 
 gulp.task('jsHint', function() {

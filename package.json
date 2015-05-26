@@ -1,17 +1,20 @@
 {
   "name": "gulp-n00b",
   "version": "1.0.0",
-  "description": "",
+  "description": "Introduction to Gulp",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Cliff Smith",
+  "contributors": [
+    "Jack Smith"
+  ],
   "license": "MIT",
   "devDependencies": {
     "browser-sync": "^2.7.1",
+    "del": "^1.2.0",
     "gulp": "^3.8.11",
-    "gulp-clean": "^0.3.1",
     "gulp-concat": "^2.5.2",
     "gulp-jshint": "^1.10.0",
     "gulp-strip-debug": "^1.0.2",
@@ -20,5 +23,13 @@
     "gulp-uglifycss": "^1.0.4",
     "main-bower-files": "^2.8.0",
     "run-sequence": "^1.1.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sythas/gulp-intro"
+  },
+  "bugs": {
+    "url": "https://github.com/sythas/gulp-intro/issues"
+  },
+  "homepage": "https://github.com/sythas/gulp-intro"
 }
