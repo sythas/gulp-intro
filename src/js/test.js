@@ -1,4 +1,4 @@
-var test = function() {
+function test() {
     var self = this;
     
     this.t1 = 'test1';
