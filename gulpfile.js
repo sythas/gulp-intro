@@ -68,10 +68,9 @@ gulp.task('copyClasses', function() {
         .pipe(browserSync.reload({stream: true}));
 });
 
-gulp.task('deploy', function(){
+gulp.task('deploy',  function(){
   gulp.src(DEST + '/**/*')
     .pipe(ghPages());
-  console.log("App is available @ http://sythas.github.io/gulp-intro")
 });
 
 gulp.task('browserSync', function() {
@@ -86,7 +85,7 @@ gulp.task('watchFiles', function() {
 });
 
 gulp.task('default', function() {
-    runSequence(
+    return runSequence(
         ['cleanBuildFolder'],
         ['copyHTML', 'copyCSS', 'copyJS', 'copyClasses'],
         ['browserSync'],
