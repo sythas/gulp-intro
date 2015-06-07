@@ -13,6 +13,7 @@ var gulp        = require("gulp"),
     karma       = require('karma').server;
 
 var DEST = "build",
+    PUBLISH = ".publish",
     SOURCE = "src/js/**/*.js",
     CLASSES = "src/js/**/*.ts",
     HTML = "src/**/*.html",
@@ -24,8 +25,8 @@ gulp.task('hello', function() {
     console.log('This is "Gulp" signing in...');
 });
 
-gulp.task('cleanBuildFolder', function(cb) {
-  del(DEST, cb);
+gulp.task('clean', function(cb) {
+  del([ DEST, PUBLISH ], cb);
 });
 
 gulp.task('jsHint', function() {
@@ -41,11 +42,7 @@ function testError(done){
 }
 
 gulp.task('test', [ 'jsHint' ], function (done) {
-  var opts = { configFile: KARMA_CFG};
-
-  opts.singleRun = process.argv[1] !== 'test';
-
-  karma.start(opts, testError(done));
+  karma.start({ configFile: KARMA_CFG, singleRun: true}, testError(done));
 });
 
 gulp.task('copyHTML', function() {
@@ -84,7 +81,7 @@ gulp.task('copyClasses', function() {
         .pipe(browserSync.reload({stream: true}));
 });
 
-gulp.task('deploy',  function(){
+gulp.task('deploy', [ 'build' ], function(){
   gulp.src(DEST + '/**/*')
     .pipe(ghPages());
 });
@@ -100,10 +97,10 @@ gulp.task('watchFiles', function() {
     gulp.watch(CLASSES, ['copyClasses']);
 });
 
-gulp.task('default', function() {
-    return runSequence(
-        ['cleanBuildFolder'],
-        ['copyHTML', 'copyCSS', 'copyJS', 'copyClasses'],
-        ['browserSync'],
-        ['watchFiles']);
+gulp.task('build', function(done){
+  runSequence('clean', ['copyHTML', 'copyCSS', 'copyJS', 'copyClasses'], done);
+});
+
+gulp.task('default', function(done) {
+    return runSequence('build', 'browserSync', 'watchFiles', done);
 });
