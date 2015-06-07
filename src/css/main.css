@@ -1,4 +1,4 @@
-/*-- base panel --*/
+a/*-- base panel --*/
 
 h1 {
     color: #00478F;
@@ -44,7 +44,7 @@ h2 {
     color: #FF0000;
 }
 
-#playerstatus {
+.playerstatus {
     font-size: 20px;
     color: #AA0000;
 }
