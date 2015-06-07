@@ -6,18 +6,16 @@ var gulp        = require("gulp"),
     concat      = require("gulp-concat"),
     uglify      = require("gulp-uglify"),
     uglifyCSS   = require("gulp-uglifycss"),
-    runSequence = require("run-sequence");
+    runSequence = require("run-sequence"),
+    ngAnnotate = require('gulp-ng-annotate'),
+    sourcemaps = require('gulp-sourcemaps');
 
 var DEST = "build",
     SOURCE = "src/js/**/*.js",
     CLASSES = "src/js/**/*.ts",
     HTML = "src/**/*.html",
     FONTS = "src/css/fonts/**/*.*",
-    CSS = "src/css/**/*.css", 
-    LIBRARIES = [
-  "node_modules/angular/angular.min.js",
-  "node_modules/jquery/dist/jquery.min.js"
-];
+    CSS = "src/css/**/*.css";
 
 gulp.task('hello', function() {
     console.log('This is "Gulp" signing in...');
@@ -41,27 +39,24 @@ gulp.task('copyHTML', function() {
 
 gulp.task('copyCSS', function(){
     gulp.src(FONTS)
-        .pipe(gulp.dest('build/css/fonts'))
+        .pipe(gulp.dest('build/css/fonts'));
     gulp.src(CSS)
         .pipe(concat('main.css'))
         .pipe(uglifyCSS())
         .pipe(gulp.dest(DEST + '/css'))
         .pipe(browserSync.reload({stream: true}));
-})
-gulp.task('copyJS',  function() {
-    gulp.src(SOURCE)
-        .pipe(concat('scripts.min.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest(DEST + '/js'))
-        .pipe(browserSync.reload({stream: true}));
-})
+});
 
-gulp.task('copyLib', function() {
-    return gulp.src(LIBRARIES)
-        .pipe(concat('lib.min.js'))
-        .pipe(gulp.dest(DEST + '/js'))
-        .pipe(browserSync.reload({stream: true}));
-})
+gulp.task('copyJS', [ 'jsHint' ], function() {
+    gulp.src(SOURCE)
+      .pipe(sourcemaps.init())
+        .pipe(concat('scripts.min.js'))
+        .pipe(ngAnnotate())
+        .pipe(uglify())
+      .pipe(sourcemaps.write())
+      .pipe(gulp.dest(DEST + '/js'))
+      .pipe(browserSync.reload({stream: true}));
+});
 
 gulp.task('copyClasses', function() {
     gulp.src(CLASSES)
@@ -86,8 +81,7 @@ gulp.task('watchFiles', function() {
 gulp.task('default', function() {
     runSequence(
         ['cleanBuildFolder'],
-        ['jsHint'],
-        ['copyHTML', 'copyCSS', 'copyJS', 'copyClasses', 'copyLib'],
+        ['copyHTML', 'copyCSS', 'copyJS', 'copyClasses'],
         ['browserSync'],
         ['watchFiles']);
 });

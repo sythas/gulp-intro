@@ -4,11 +4,12 @@ function appLoaded() {
 
 var ngApp = angular.module('app', []);
 
-ngApp.controller('MainController', ['$scope', function($scope) {
+ngApp.controller('MainController', function($scope) {
     var main = this;
     
     main.data1 = "angular data 1";
     main.data2 = "angular data 2";
+    main.playerStatus = "";
     main.visible = true;
     
     main.hideData = function() {
@@ -33,26 +34,20 @@ ngApp.controller('MainController', ['$scope', function($scope) {
     };
 
     main.attackit = function(p) {
-        var msg = p.attack();
-        
-        $('#playerstatus').html(msg);
+        main.playerStatus = p.attack();
     };
-}]);
+});
 
 appLoaded();
-console.log();
-console.log("Standard JS stuff...");
+console.log("\nStandard JS stuff...");
 t = new test();
 t.printVar();
 
-console.log();
 var p1 = new Player('Tom');
 var p2 = new Gladiator('Dick','sword');
 var p3 = new Gladiator('Harry','spear');
 var p4 = new Wizard("Gandalf","sword",["spellbook","crystal skull"]);
 
-console.log("The \"Game\" class - create a game called \"myMaze\"...");
+console.log("\nThe \"Game\" class - create a game called \"myMaze\"...");
 var g = new Game('myMaze',[p1, p2, p3, p4]);
-
-console.log();
-console.log("The \"Player, Gladiator, and Wizard\" classes - create a \"Player\", two \"Gladiators\", and a Wizard...");
+console.log("\nThe \"Player, Gladiator, and Wizard\" classes - create a \"Player\", two \"Gladiators\", and a Wizard...");
