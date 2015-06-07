@@ -9,14 +9,16 @@ var gulp        = require("gulp"),
     runSequence = require("run-sequence"),
     ngAnnotate  = require('gulp-ng-annotate'),
     sourcemaps  = require('gulp-sourcemaps'),
-    ghPages     = require('gulp-gh-pages');
+    ghPages     = require('gulp-gh-pages'),
+    karma       = require('karma').server;
 
 var DEST = "build",
     SOURCE = "src/js/**/*.js",
     CLASSES = "src/js/**/*.ts",
     HTML = "src/**/*.html",
     FONTS = "src/css/fonts/**/*.*",
-    CSS = "src/css/**/*.css";
+    CSS = "src/css/**/*.css",
+    KARMA_CFG = __dirname + '/karma.conf.js';
 
 gulp.task('hello', function() {
     console.log('This is "Gulp" signing in...');
@@ -27,9 +29,23 @@ gulp.task('cleanBuildFolder', function(cb) {
 });
 
 gulp.task('jsHint', function() {
-    gulp.src(SOURCE)
+    return gulp.src(SOURCE)
         .pipe(jshint())
         .pipe(jshint.reporter('jshint-stylish'));
+});
+
+function testError(done){
+  return function(exitStatus) {
+    done(exitStatus ? "Tests Failed, Stopping..." : undefined);
+  };
+}
+
+gulp.task('test', [ 'jsHint' ], function (done) {
+  var opts = { configFile: KARMA_CFG};
+
+  opts.singleRun = process.argv[1] !== 'test';
+
+  karma.start(opts, testError(done));
 });
 
 gulp.task('copyHTML', function() {
@@ -48,7 +64,7 @@ gulp.task('copyCSS', function(){
         .pipe(browserSync.reload({stream: true}));
 });
 
-gulp.task('copyJS', [ 'jsHint' ], function() {
+gulp.task('copyJS', [ 'test' ], function() {
     gulp.src(SOURCE)
       .pipe(sourcemaps.init())
         .pipe(concat('scripts.min.js'))
