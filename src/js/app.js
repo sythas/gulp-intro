@@ -13,7 +13,7 @@ ngApp.controller('MainController', ['$scope', function($scope) {
     
     main.hideData = function() {
         main.visible = !main.visible;
-    }
+    };
     
         //-- the class stuff
         
@@ -21,7 +21,7 @@ ngApp.controller('MainController', ['$scope', function($scope) {
     main.p1 = new Player('Tom');
     main.p2 = new Gladiator('Dick','sword');
     main.p3 = new Gladiator('Harry','spear');
-    main.p4 = new Wizard("Gandalf","sword",["spellbook","crystal skull"])
+    main.p4 = new Wizard("Gandalf","sword",["spellbook","crystal skull"]);
 
     main.game.addPlayer(p1);
     main.game.addPlayer(p2);
@@ -29,13 +29,14 @@ ngApp.controller('MainController', ['$scope', function($scope) {
     main.game.addPlayer(p4);
     
     main.addNewPlayer = function(pl) {
-        main.game.removePlayer
-    }
+        main.game.removePlayer();
+    };
+
     main.attackit = function(p) {
         var msg = p.attack();
         
         $('#playerstatus').html(msg);
-    }
+    };
 }]);
 
 appLoaded();
@@ -48,7 +49,7 @@ console.log();
 var p1 = new Player('Tom');
 var p2 = new Gladiator('Dick','sword');
 var p3 = new Gladiator('Harry','spear');
-var p4 = new Wizard("Gandalf","sword",["spellbook","crystal skull"])
+var p4 = new Wizard("Gandalf","sword",["spellbook","crystal skull"]);
 
 console.log("The \"Game\" class - create a game called \"myMaze\"...");
 var g = new Game('myMaze',[p1, p2, p3, p4]);

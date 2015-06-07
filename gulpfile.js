@@ -30,7 +30,7 @@ gulp.task('cleanBuildFolder', function(cb) {
 gulp.task('jsHint', function() {
     gulp.src(SOURCE)
         .pipe(jshint())
-        .pipe(jshint.reporter('default'));
+        .pipe(jshint.reporter('jshint-stylish'));
 });
 
 gulp.task('copyHTML', function() {
@@ -81,12 +81,13 @@ gulp.task('watchFiles', function() {
     gulp.watch(CSS, ['copyCSS']);
     gulp.watch(SOURCE, ['copyJS']);
     gulp.watch(CLASSES, ['copyClasses']);
-    gulp.watch('gulpfile.js', ['copyHTML', 'copyCSS', 'copyJS', 'copyClasses', 'copyLib']);
+    gulp.watch('gulpfile.js', ['jshint', 'copyHTML', 'copyCSS', 'copyJS', 'copyClasses', 'copyLib']);
 });
 
 gulp.task('default', function() {
     runSequence(
         ['cleanBuildFolder'],
+        ['jsHint'],
         ['copyHTML', 'copyCSS', 'copyJS', 'copyClasses', 'copyLib'],
         ['browserSync'],
         ['watchFiles']);
