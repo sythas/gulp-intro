@@ -7,8 +7,9 @@ var gulp        = require("gulp"),
     uglify      = require("gulp-uglify"),
     uglifyCSS   = require("gulp-uglifycss"),
     runSequence = require("run-sequence"),
-    ngAnnotate = require('gulp-ng-annotate'),
-    sourcemaps = require('gulp-sourcemaps');
+    ngAnnotate  = require('gulp-ng-annotate'),
+    sourcemaps  = require('gulp-sourcemaps'),
+    ghPages     = require('gulp-gh-pages');
 
 var DEST = "build",
     SOURCE = "src/js/**/*.js",
@@ -65,6 +66,12 @@ gulp.task('copyClasses', function() {
         .pipe(uglify())
         .pipe(gulp.dest(DEST + '/js'))
         .pipe(browserSync.reload({stream: true}));
+});
+
+gulp.task('deploy', function(){
+  gulp.src(DEST + '/**/*')
+    .pipe(ghPages());
+  console.log("App is available @ http://sythas.github.io/gulp-intro")
 });
 
 gulp.task('browserSync', function() {
