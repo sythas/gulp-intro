@@ -81,7 +81,6 @@ gulp.task('watchFiles', function() {
     gulp.watch(CSS, ['copyCSS']);
     gulp.watch(SOURCE, ['copyJS']);
     gulp.watch(CLASSES, ['copyClasses']);
-    gulp.watch('gulpfile.js', ['jshint', 'copyHTML', 'copyCSS', 'copyJS', 'copyClasses', 'copyLib']);
 });
 
 gulp.task('default', function() {
